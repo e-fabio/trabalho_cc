@@ -28,23 +28,16 @@ const TOKEN_TYPES = {
   NUM: 'NUM',
   SEPARADOR: 'SEPARADOR',
   VIRGULA: 'VIRGULA',
-  CARACTERE: 'CARACTERE'
+  CARACTERE: 'CARACTERE',
+  ERRO: 'ERRO'
 };
 
 // Tabela de Símbolos
-const symbolTable = {
-  identifiers: {},
-  constants: {},
-};
+const symbolTable = {};
 
 // Função para adicionar identificadores à tabela de símbolos
 function addIdentifier(identifier, value) {
-  symbolTable.identifiers[identifier] = { type: TOKEN_TYPES.IDENTIFIER, lexeme: identifier, value };
-}
-
-// Função para adicionar constantes à tabela de símbolos
-function addConstant(constant, value) {
-  symbolTable.constants[constant] = { type: TOKEN_TYPES.CONSTANT, lexeme: constant, value };
+  symbolTable[identifier] = { type: TOKEN_TYPES.IDENTIFIER, lexeme: identifier, value };
 }
 
 // Função para gerar um token
@@ -58,46 +51,114 @@ function lexicalAnalyzer(input) {
   let line = 1;
   let column = 1;
 
-  while (position < input.length) {
-    let char = input[position];
+  let estadoInicial = 'A';
+  let estadoAtual = estadoInicial;
 
-    // Implementação da máquina de estados aqui
-    // Exemplo simplificado para identificadores
-    if (char.match(/[a-zA-Z]/)) {
-      let identifier = '';
-      while (position < input.length && char.match(/[a-zA-Z0-9]/)) {
-        identifier += char;
-        position++;
-        column++;
+  let lexema = '';
+
+  while (true) {
+
+    let char = '';
+
+    switch (estadoAtual) {
+      case 'A':
         char = input[position];
-      }
-      // Adicionando o identificador à tabela de símbolos
-      addIdentifier(identifier, undefined); // Valor será definido posteriormente
-      return generateToken(TOKEN_TYPES.IDENTIFIER, identifier, undefined, { line, column });
-    }
+        lexema += char;
+        if (/[\s\t\n]/.test(char)) {
+          estadoAtual = 'B';
+        } else if (char === '<') {
+          estadoAtual = 'C';
+        } else if (char === '+') {
+          estadoAtual = 'D';
+        } else if (char === '/') {
+          estadoAtual = 'E';
+        } else if (char === ';') {
+          estadoAtual = 'F';
+        } else if (char === '\'') {
+          estadoAtual = 'G';
+        } else if (char === '-') {
+          estadoAtual = 'I';
+        } else if (char === '^') {
+          estadoAtual = 'J';
+        } else if (char === '*') {
+          estadoAtual = 'O';
+        } else if (char === '(') {
+          estadoAtual = 'P';
+        } else if (char === '>') {
+          estadoAtual = 'V';
+        } else if (char === '=') {
+          estadoAtual = 'X';
+        } else if (char === '%') {
+          estadoAtual = 'AH';
+        } else if (char === '.') {
+          //erro
+          return false;
+        } else if (/[0-9]/.test(char)) { //numero
+          estadoAtual = 'H';
+        } else if (char === '_') {
+          estadoAtual = 'AK';
+        } else if (char === 'a') {
+          estadoAtual = 'S';
+        } else if (char === 'c') {
+          estadoAtual = 'AC';
+        } else if (char === 'e') {
+          estadoAtual = 'R';
+        } else if (char === 'E') {
+          estadoAtual = 'AK';
+        } else if (char === 'f') {
+          estadoAtual = 'L';
+        } else if (char === 'g') {
+          estadoAtual = 'AK';
+        } else if (char === 'h') {
+          estadoAtual = 'AK';
+        } else if (char === 'i') {
+          estadoAtual = 'AB';
+        } else if (char === 'l') {
+          estadoAtual = 'AK';
+        } else if (char === 'm') {
+          estadoAtual = 'AK';
+        } else if (char === 'n') {
+          estadoAtual = 'AK';
+        } else if (char === 'o') {
+          estadoAtual = 'AK';
+        } else if (char === 'p') {
+          estadoAtual = 'AF';
+        } else if (char === 'q') {
+          estadoAtual = 'AK';
+        } else if (char === 'r') {
+          estadoAtual = 'AA';
+        } else if (char === 's') {
+          estadoAtual = 'M';
+        } else if (char === 't') {
+          estadoAtual = 'AK';
+        } else if (char === 'u') {
+          estadoAtual = 'AK';
+        } else if (/[a-zA-Z]/.test(char)) { //demais letras
+          estadoAtual = 'AK';
+        } else {
+          //erro - transição não definida
+          return false;
+        }
+        break;
 
-    // Implementação para outros tipos de tokens (comentários, separadores, etc.)
-    // Exemplo para separadores
-    else if (char === ' ') {
-      position++;
-      column++;
-    }
-    // Exemplo para erros léxicos
-    else {
-      return generateToken(TOKEN_TYPES.ERROR, char, undefined, { line, column });
+      default:
+        return generateToken(TOKEN_TYPES.ERRO, lexema, undefined, { line, column });
     }
 
     // Atualizando a posição e as coordenadas
-    if (char === '\n') {
+    if (char == '\n') {
       line++;
       column = 1;
     }
     position++;
     column++;
-  }
 
-  // Retorna null quando a entrada é completamente analisada
-  return null;
+    // se for estado final retornar o token 
+    // return generateToken(TOKEN_TYPES.IDENTIFIER, identifier, undefined, { line, column });
+
+    // se for identificador ou num tem que adicionar na tabela de símbolos
+    // addIdentifier(identifier, undefined); // Valor será definido posteriormente
+  }
 }
 
 // Exemplo de uso
@@ -109,3 +170,5 @@ while (token) {
   token = lexicalAnalyzer(input.slice(token.position.column - 1));
 }
 console.log(tokens);
+
+
