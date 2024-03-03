@@ -2978,7 +2978,9 @@ let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
 let token = analisador_lexico(codigo, linha, coluna);
 
 while (token) {
-  tokens.push(token);
+  if (token.tipo != TIPO_TOKEN.COMENTARIO && token.tipo != TIPO_TOKEN.SEPARADOR) {
+    tokens.push(token);
+  }
   token = analisador_lexico(codigo, linha, coluna);
 }
 
