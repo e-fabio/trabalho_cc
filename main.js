@@ -107,7 +107,10 @@ function analisador_lexico(input) {
                     estadoAtual = 'V';
                 } else if (char === '=') {
                     estadoAtual = 'X';
-                } else if (char === '%') {
+                } else if (char === ',') {
+                    estadoAtual = 'DB';
+                }
+                else if (char === '%') {
                     estadoAtual = 'AH';
                 } else if (/[0-9]/.test(char)) {
                     estadoAtual = 'H';
@@ -2952,7 +2955,11 @@ function analisador_lexico(input) {
                 return gerar_token(TIPO_TOKEN.FIM_PARENTESES, lexema, lexema, { linha, coluna });
 
             case 'DA':
+                lexema = trata_lockhead(lexema);
                 return gerar_token(TIPO_TOKEN.ENTAO, lexema, undefined, { linha, coluna });
+
+            case 'DB':
+                return gerar_token(TIPO_TOKEN.VIRGULA, lexema, undefined, { linha, coluna });
 
             default:
                 return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
