@@ -109,11 +109,12 @@ function analisador_lexico(input) {
           estadoAtual = 'V';
         } else if (char === '=') {
           estadoAtual = 'X';
+        } else if (char === '%') {
+          estadoAtual = 'AH';
+        } else if (char === '.') {
+          estadoAtual = 'BN';
         } else if (char === ',') {
           estadoAtual = 'DB';
-        }
-        else if (char === '%') {
-          estadoAtual = 'AH';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'H';
         } else if (char === '_') {
@@ -158,7 +159,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -205,11 +206,11 @@ function analisador_lexico(input) {
       case 'G':
         char = input[posicao];
         lexema += char == undefined ? '' : char;
-        if (/[a-zA-Z]/.test(char)) {
+        if (/[^']/.test('' + char + '')) {
           estadoAtual = 'AG';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -267,6 +268,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -274,6 +277,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -319,7 +324,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -346,6 +351,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -353,6 +360,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -398,7 +407,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -428,6 +437,8 @@ function analisador_lexico(input) {
           estadoAtual = 'AJ';
         } else if (char === '(') {
           estadoAtual = 'AJ';
+        } else if (char === ')') {
+          estadoAtual = 'AJ';
         } else if (char === '>') {
           estadoAtual = 'AJ';
         } else if (char === '=') {
@@ -435,6 +446,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'AJ';
         } else if (char === '.') {
+          estadoAtual = 'AJ';
+        } else if (char === ',') {
           estadoAtual = 'AJ';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AJ';
@@ -480,7 +493,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AJ';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -514,6 +527,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -521,6 +536,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -566,7 +583,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -593,6 +610,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -600,6 +619,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -645,7 +666,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -756,6 +777,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -763,6 +786,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -808,7 +833,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -816,78 +841,82 @@ function analisador_lexico(input) {
         char = input[posicao];
         lexema += char == undefined ? '' : char;
         if (/[\s\t\n]/.test(char)) {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '<') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '+') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '/') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === ';') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '\'') {
           estadoAtual = 'AV';
         } else if (char === '-') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '^') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '*') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '(') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+        } else if (char === ')') {
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '>') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '=') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '%') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '.') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+        } else if (char === ',') {
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         } else if (/[0-9]/.test(char)) {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === '_') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'a') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'c') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'e') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'E') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'f') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'g') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'h') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'i') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'l') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'm') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'n') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'o') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'p') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'q') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'r') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 's') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 't') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (char === 'u') {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else if (/[a-zA-Z]/.test(char)) {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "'" esperado.`, { linha, coluna });
         }
         break;
 
@@ -928,6 +957,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -962,6 +993,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -982,7 +1015,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AZ';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "[0-9]" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "[0-9]" esperado.`, { linha, coluna });
         }
         break;
 
@@ -1013,6 +1046,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1020,6 +1055,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1065,7 +1102,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1092,6 +1129,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1099,6 +1138,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1144,7 +1185,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1171,6 +1212,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1178,6 +1221,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1223,7 +1268,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1250,6 +1295,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1257,6 +1304,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1302,7 +1351,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1329,6 +1378,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1336,6 +1387,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1381,7 +1434,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1408,6 +1461,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1415,6 +1470,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1460,7 +1517,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1496,6 +1553,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1503,6 +1562,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1548,7 +1609,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1577,6 +1638,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BG';
         } else if (char === '(') {
           estadoAtual = 'BG';
+        } else if (char === ')') {
+          estadoAtual = 'BG';
         } else if (char === '>') {
           estadoAtual = 'BG';
         } else if (char === '=') {
@@ -1584,6 +1647,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BG';
         } else if (char === '.') {
+          estadoAtual = 'BG';
+        } else if (char === ',') {
           estadoAtual = 'BG';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1627,11 +1692,9 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else if (/[a-zA-Z]/.test(char)) {
           estadoAtual = 'AK';
-        } else if (char == ')') {
-          estadoAtual = 'BG';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1658,6 +1721,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BH';
         } else if (char === '(') {
           estadoAtual = 'BH';
+        } else if (char === ')') {
+          estadoAtual = 'BH';
         } else if (char === '>') {
           estadoAtual = 'BH';
         } else if (char === '=') {
@@ -1665,6 +1730,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BH';
         } else if (char === '.') {
+          estadoAtual = 'BH';
+        } else if (char === ',') {
           estadoAtual = 'BH';
         } else if (/[0-9]/.test(char)) {
           break;
@@ -1708,11 +1775,9 @@ function analisador_lexico(input) {
           estadoAtual = 'BH';
         } else if (/[a-zA-Z]/.test(char)) {
           estadoAtual = 'BH';
-        } else if (char === ',') {
-          estadoAtual = 'BH';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1739,6 +1804,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1746,6 +1813,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1791,7 +1860,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1818,6 +1887,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1825,6 +1896,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1870,7 +1943,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1897,6 +1970,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -1904,6 +1979,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -1949,7 +2026,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -1978,6 +2055,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BM';
         } else if (char === '(') {
           estadoAtual = 'BM';
+        } else if (char === ')') {
+          estadoAtual = 'BM';
         } else if (char === '>') {
           estadoAtual = 'BM';
         } else if (char === '=') {
@@ -1985,6 +2064,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BM';
         } else if (char === '.') {
+          estadoAtual = 'BM';
+        } else if (char === ',') {
           estadoAtual = 'BM';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2030,7 +2111,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2057,6 +2138,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2064,6 +2147,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2109,7 +2194,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2127,12 +2212,14 @@ function analisador_lexico(input) {
       case 'BI':
         char = input[posicao];
         lexema += char == undefined ? '' : char;
-        if (char === '+' || char === '-') {
+        if (char === '+') {
+          estadoAtual = 'CW';
+        } else if (char === '-') {
           estadoAtual = 'CW';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'CX';
         } else {
-          gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "[0-9]" ou "[+-]" esperado.`, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, `Erro: "[0-9]" ou "[+-]" esperado.`, { linha, coluna });
         }
         break;
 
@@ -2159,6 +2246,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2166,6 +2255,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2211,7 +2302,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2238,6 +2329,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2245,6 +2338,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2290,7 +2385,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2317,6 +2412,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2324,6 +2421,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2369,13 +2468,14 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
       case 'BM':
         lexema = trata_lockhead(lexema);
         return gerar_token(TIPO_TOKEN.SENAO, lexema, undefined, { linha, coluna });
+
       case 'BN':
         lexema = trata_lockhead(lexema);
         if (buscar_tabelaSimbolos(lexema) == undefined) {
@@ -2406,6 +2506,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2413,6 +2515,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2458,7 +2562,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2485,6 +2589,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2492,6 +2598,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2537,7 +2645,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2564,6 +2672,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BN';
         } else if (char === '(') {
           estadoAtual = 'BN';
+        } else if (char === ')') {
+          estadoAtual = 'BN';
         } else if (char === '>') {
           estadoAtual = 'BN';
         } else if (char === '=') {
@@ -2571,6 +2681,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BN';
         } else if (char === '.') {
+          estadoAtual = 'BN';
+        } else if (char === ',') {
           estadoAtual = 'BN';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2616,7 +2728,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -2645,6 +2757,8 @@ function analisador_lexico(input) {
           estadoAtual = 'BS';
         } else if (char === '(') {
           estadoAtual = 'BS';
+        } else if (char === ')') {
+          estadoAtual = 'BS';
         } else if (char === '>') {
           estadoAtual = 'BS';
         } else if (char === '=') {
@@ -2652,6 +2766,8 @@ function analisador_lexico(input) {
         } else if (char === '%') {
           estadoAtual = 'BS';
         } else if (char === '.') {
+          estadoAtual = 'BS';
+        } else if (char === ',') {
           estadoAtual = 'BS';
         } else if (/[0-9]/.test(char)) {
           estadoAtual = 'AK';
@@ -2697,7 +2813,7 @@ function analisador_lexico(input) {
           estadoAtual = 'AK';
         } else {
           //erro - transição não definida
-          gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
+          return gerar_token(TIPO_TOKEN.ERRO, lexema, undefined, { linha, coluna });
         }
         break;
 
@@ -3000,7 +3116,7 @@ function analisador_lexico(input) {
 // Exemplo de uso
 //let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
 
-let codigo = "enquanto a >= b faca a <- a - 1;12.1,(ate),";
+let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
 
 let token = analisador_lexico(codigo, linha, coluna);
 
