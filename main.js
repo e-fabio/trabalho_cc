@@ -1,37 +1,48 @@
+
+class Token {
+  constructor(tipo, lexema, atributo, posicao) {
+    this.tipo = tipo;
+    this.lexema = lexema;
+    this.atributo = atributo;
+    this.posicao = posicao;
+  }
+}
+
+// adicionar apenas no léxico ???
 var linha = 1;
 var coluna = 0;
 var posicao = 0;
-const tokens = [];
+// const tokens = [];
 
 // Definindo os tipos de tokens
 const TIPO_TOKEN = {
-  PROGRAMA: 'PROGRAMA',
-  INICIO_BLOCO: 'INICIO_BLOCO',
-  FIM_BLOCO: 'FIM_BLOCO',
-  TIPO: 'TIPO',
-  SE: 'SE',
-  INICIO_PARENTESES: 'INICIO_PARENTESES',
-  FIM_PARENTESES: 'FIM_PARENTESES',
-  ENTAO: 'ENTAO',
-  SENAO: 'SENAO',
+  PROGRAMA: 'programa',
+  INICIO_BLOCO: '/*',
+  FIM_BLOCO: '*/',
+  TIPO: 'tipo',
+  SE: 'se',
+  INICIO_PARENTESES: '(',
+  FIM_PARENTESES: ')',
+  ENTAO: 'entao',
+  SENAO: 'senao',
   COMENTARIO: 'COMENTARIO',
-  ENQUANTO: 'ENQUANTO',
-  FACA: 'FACA',
-  REPITA: 'REPITA',
-  ATE: 'ATE',
-  ID: 'ID',
-  OPERADOR_RELACIONAL: 'OPERADOR_RELACIONAL',
-  OPERADOR_SOMA: 'OPERADOR_SOMA',
-  OPERADOR_SUBTRACAO: 'OPERADOR_SUBTRACAO',
-  OPERADOR_MULTIPLICACAO: 'OPERADOR_MULTIPLICACAO',
-  OPERADOR_DIVISAO: 'OPERADOR_DIVISAO',
-  OPERADOR_POTENCIACAO: 'OPERADOR_POTENCIACAO',
-  DECLARACAO: 'DECLARACAO',
-  ATRIBUICAO: 'ATRIBUICAO',
-  PONTO_VIRGULA: 'PONTO_VIRGULA',
-  NUM: 'NUM',
+  ENQUANTO: 'enquanto',
+  FACA: 'faca',
+  REPITA: 'repita',
+  ATE: 'ate',
+  ID: 'id',
+  OPERADOR_RELACIONAL: 'opRelacional',
+  OPERADOR_SOMA: '+',
+  OPERADOR_SUBTRACAO: '-',
+  OPERADOR_MULTIPLICACAO: '*',
+  OPERADOR_DIVISAO: '/',
+  OPERADOR_POTENCIACAO: '^',
+  DECLARACAO: '->',
+  ATRIBUICAO: '<-',
+  PONTO_VIRGULA: ';',
+  NUM: 'num',
   SEPARADOR: 'SEPARADOR',
-  VIRGULA: 'VIRGULA',
+  VIRGULA: ',',
   CARACTERE: 'CARACTERE',
   ERRO: 'ERRO'
 };
@@ -52,7 +63,7 @@ function buscar_tabelaSimbolos(lexema) {
 // Função para gerar um token
 function gerar_token(tipo, lexema, atributo, posicao) {
   posicao.coluna = posicao.coluna - lexema.length + 1;
-  return { tipo, lexema, atributo, posicao };
+  return new Token(tipo, lexema, atributo, posicao);
 }
 
 function trata_lockhead(lexema) {
@@ -3111,24 +3122,431 @@ function analisador_lexico(input) {
   }
 }
 
+// Análise sintática
 
+const tabelaAnalisePreditiva = {
+  'codigo': {
+    'programa': '1'
+  }, 'bloco': {
+    '/*': '2',
+    '*/': '3',
+    'senao': '3',
+    'ate': '3',
+    '$': '3'
+  }, 'declaracao': {
+    '*/': '5',
+    'tipo': '4',
+    'se': '5',
+    'senao': '5',
+    'enquanto': '5',
+    'repita': '5',
+    'ate': '5',
+    'id': '5',
+    '$': '5'
+  }, 'lista_ids': {
+    'id': '6'
+  }, 'lista_ids\'': {
+    ';': '44',
+    ',': '7'
+  }, 'comando': {
+    '*/': '11',
+    'se': '8',
+    'senao': '11',
+    'enquanto': '9',
+    'repita': '9',
+    'ate': '11',
+    'id': '10'
+  }, 'comandoSel': {
+    'se': '12'
+  }, 'comandoSel\'': {
+    '*/': '13',
+    'se': '14',
+    'senao': '13',
+    'enquanto': '14',
+    'repita': '14',
+    'ate': '13',
+    'id': '14',
+    '/': '13',
+    '$': '13'
+  }, 'comandoSel\'\'': {
+    '*/': '17',
+    'senao': '16',
+    'ate': '17'
+  }, 'comandoSel\'\'\'': {
+    '/*': '19',
+    '*/': '18',
+    'se': '18',
+    'senao': '18',
+    'enquanto': '18',
+    'repita': '18',
+    'ate': '18',
+    'id': '18',
+    '$': '19'
+  }, 'comandoRep': {
+    'enquanto': '20',
+    'repita': '21'
+  }, 'comandoRep\'': {
+    '/*': '23',
+    '*/': '22',
+    'se': '22',
+    'senao': '22',
+    'enquanto': '22',
+    'repita': '22',
+    'ate': '22',
+    'id': '22',
+    '$': '23'
+  }, 'comandoRep\'\'': {
+    '/*': '24',
+    '*/': '24',
+    'se': '24',
+    'senao': '24',
+    'enquanto': '24',
+    'repita': '24',
+    'ate': '24',
+    'id': '24'
+  }, 'comandoAtr': {
+    'id': '25'
+  }, 'cond': {
+    'id': '26',
+    'num': '26'
+  }, 'cond\'': {
+    'entao': '45',
+    'faca': '45',
+    'opRelacional': '27',
+    ';': '45'
+  }, 'termo': {
+    'id': '28',
+    'num': '29'
+  }, 'expressao': {
+    '(': '30',
+    'id': '30',
+    'num': '30'
+  }, 'expressao\'': {
+    ')': '33',
+    '+': '31',
+    '-': '32',
+    ';': '33'
+  }, 'expressao2': {
+    '(': '34',
+    'id': '34',
+    'num': '34'
+  }, 'expressao2\'': {
+    ')': '37',
+    '+': '37',
+    '-': '37',
+    '*': '36',
+    '/': '35',
+    ';': '37'
+  }, 'expressao3': {
+    '(': '38',
+    ')': '38',
+    'id': '38',
+    '+': '38',
+    '-': '38',
+    '*': '38',
+    '/': '38',
+    '^': '38',
+    ';': '38',
+    'num': '38'
+  }, 'expressao3\'': {
+    ')': '40',
+    '+': '40',
+    '-': '40',
+    '*': '40',
+    '/': '40',
+    '^': '39',
+    ';': '40'
+  }, 'expressao4': {
+    '(': '41',
+    'id': '42',
+    'num': '42'
+  }
+};
+
+class AnalisadorSintatico {
+  constructor(tabelaAnalisePreditiva) {
+    this.tabelaAnalisePreditiva = tabelaAnalisePreditiva;
+    this.pilhaEstados = [];
+    this.simbolosTerminais = ['programa', '/*', '*/', 'tipo', 'se', '(', ')', 'entao', 'senao', '%', 'enquanto', 'faca', 'repita', 'ate', 'id', 'opRelacional', '+', '-', '*', '/', '^', '->', '<-', ';', '<-', 'num', ',', 'ws', '.', 'E', '$'];
+  }
+
+  inicializar_pilha() {
+    this.pilhaEstados = ['codigo'];
+  }
+
+  proximo_token(codigo) {
+    let proximoToken = analisador_lexico(codigo);
+    while (proximoToken.tipo == TIPO_TOKEN.COMENTARIO || proximoToken.tipo == TIPO_TOKEN.SEPARADOR) {
+      // Ignora e lê o próximo
+      proximoToken = analisador_lexico(codigo);
+    }
+    return proximoToken;
+  }
+
+  atualizar_pilha(producao) {
+    switch (producao) {
+      case '1':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('bloco');
+        this.pilhaEstados.push(')');
+        this.pilhaEstados.push('(');
+        this.pilhaEstados.push('id');
+        this.pilhaEstados.push('programa');
+        break;
+      case '2':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('*/');
+        this.pilhaEstados.push('comando');
+        this.pilhaEstados.push('declaracao');
+        this.pilhaEstados.push('/*');
+        break;
+      case '3':
+        this.pilhaEstados.pop();
+        break;
+      case '4':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push(';');
+        this.pilhaEstados.push('lista_ids');
+        this.pilhaEstados.push('->');
+        this.pilhaEstados.push('tipo');
+        break;
+      case '5':
+        this.pilhaEstados.pop();
+        break;
+      case '6':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('lista_ids\'');
+        this.pilhaEstados.push('id');
+        break;
+      case '7':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('lista_ids');
+        this.pilhaEstados.push(',');
+        break;
+      case '8':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoSel');
+        break;
+      case '9':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoRep');
+        break;
+      case '10':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoAtr');
+        break;
+      case '11':
+        this.pilhaEstados.pop();
+        break;
+      case '12':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoSel\'');
+        this.pilhaEstados.push('entao');
+        this.pilhaEstados.push('cond');
+        this.pilhaEstados.push('se');
+        break;
+      case '13':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoSel\'\'');
+        this.pilhaEstados.push('bloco');
+        break;
+      case '14':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoSel\'\'');
+        this.pilhaEstados.push('comando');
+        break;
+      case '15':
+        this.pilhaEstados.pop();
+        break;
+      case '16':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoSel\'\'\'');
+        this.pilhaEstados.push('senao');
+        break;
+      case '17':
+        this.pilhaEstados.pop();
+        break;
+      case '18':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comando');
+        break;
+      case '19':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('bloco');
+        break;
+      case '20':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoRep\'');
+        this.pilhaEstados.push('faca');
+        this.pilhaEstados.push('cond');
+        this.pilhaEstados.push('enquanto');
+        break;
+      case '21':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comandoRep\'\'');
+        this.pilhaEstados.push('repita');
+        break;
+      case '22':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('comando');
+        break;
+      case '23':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('bloco');
+        break;
+      case '24':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push(';');
+        this.pilhaEstados.push('cond');
+        this.pilhaEstados.push('ate');
+        this.pilhaEstados.push('comandoRep\'');
+        break;
+      case '25':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push(';');
+        this.pilhaEstados.push('expressao');
+        this.pilhaEstados.push('<-');
+        this.pilhaEstados.push('id');
+        break;
+      case '26':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('cond\'');
+        this.pilhaEstados.push('termo');
+        break;
+      case '27':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('termo');
+        this.pilhaEstados.push('opRelacional');
+        break;
+      case '28':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('id');
+        break;
+      case '29':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('num');
+        break;
+      case '30':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao\'');
+        this.pilhaEstados.push('expressao2');
+        break;
+      case '31':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao\'');
+        this.pilhaEstados.push('expressao2');
+        this.pilhaEstados.push('+');
+        break;
+      case '32':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao\'');
+        this.pilhaEstados.push('expressao2');
+        this.pilhaEstados.push('-');
+        break;
+      case '33':
+        this.pilhaEstados.pop();
+        break;
+      case '34':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao2\'');
+        this.pilhaEstados.push('expressao3');
+        break;
+      case '35':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao2\'');
+        this.pilhaEstados.push('expressao3');
+        this.pilhaEstados.push('/');
+        break;
+      case '36':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao2\'');
+        this.pilhaEstados.push('expressao3');
+        this.pilhaEstados.push('*');
+        break;
+      case '37':
+        this.pilhaEstados.pop();
+        break;
+      case '38':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao3\'');
+        this.pilhaEstados.push('expressao4');
+        break;
+      case '39':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('expressao4');
+        this.pilhaEstados.push('^');
+        break;
+      case '40':
+        this.pilhaEstados.pop();
+        break;
+      case '41':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push(')');
+        this.pilhaEstados.push('expressao');
+        this.pilhaEstados.push('(');
+        break;
+      case '42':
+        this.pilhaEstados.pop();
+        this.pilhaEstados.push('termo');
+        break;
+      case '44':
+        this.pilhaEstados.pop();
+        break;
+      case '45':
+        this.pilhaEstados.pop();
+        break;
+    }
+  }
+
+  analisar(codigo) {
+    let proximoToken = this.proximo_token(codigo);
+
+    this.inicializar_pilha();
+
+    while (this.pilhaEstados.length > 0 && proximoToken != undefined) {
+      let topoPilha = this.pilhaEstados[this.pilhaEstados.length - 1];
+
+      console.log(this.pilhaEstados);
+      console.log(topoPilha);
+      console.log(proximoToken);
+
+      if (this.simbolosTerminais.includes(topoPilha)) {
+        // if (TIPO_TOKEN[topoPilha] != undefined) { // validar !!!
+        if (topoPilha == proximoToken.tipo) {
+          this.pilhaEstados.pop();
+          proximoToken = this.proximo_token(codigo);
+        } else {
+          break;
+        }
+      } else {
+        let producao = this.tabelaAnalisePreditiva[topoPilha][proximoToken.tipo];
+
+        if (producao == undefined) {
+          break;
+        } else {
+          // construir arvore aqui
+          this.atualizar_pilha(producao);
+        }
+      }
+    }
+
+    if (proximoToken == undefined) {
+      console.log('Erro sintático encontrado -> Fim inesperado');
+      return;
+    }
+
+    if (proximoToken.tipo == '$' && this.pilhaEstados.length == 0) {
+      console.log('Aceita!');
+    } else {
+      console.log('Erro sintático encontrado -> TOKEN = ' + proximoToken.tipo + ' -> PILHA = ' + (this.pilhaEstados.length == 0 ? 'VAZIA' : this.pilhaEstados));
+    }
+  }
+}
 
 // Exemplo de uso
 //let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
+// let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
+let codigo = "programa funcao() /*\nchar -> var1;\nvar1 <- 'd';\nse var1 = 'd' entao /*\n  var1 <- 'e';\n*/\n*/"
 
-let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
-
-let token = analisador_lexico(codigo, linha, coluna);
-
-while (token) {
-  if (token.tipo != TIPO_TOKEN.COMENTARIO && token.tipo != TIPO_TOKEN.SEPARADOR) {
-    tokens.push(token);
-  }
-  token = analisador_lexico(codigo, linha, coluna);
-}
-
-console.log('Tokens encontrados: ');
-console.log(tokens);
-
-console.log('Tabela de símbolos: ');
-console.log(tabelaSimbolos);
+const analisador = new AnalisadorSintatico(tabelaAnalisePreditiva);
+analisador.analisar(codigo);
