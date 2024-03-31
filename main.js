@@ -25,7 +25,7 @@ const TIPO_TOKEN = {
   FIM_PARENTESES: ')',
   ENTAO: 'entao',
   SENAO: 'senao',
-  COMENTARIO: 'COMENTARIO',
+  COMENTARIO: '%',
   ENQUANTO: 'enquanto',
   FACA: 'faca',
   REPITA: 'repita',
@@ -41,7 +41,7 @@ const TIPO_TOKEN = {
   ATRIBUICAO: '<-',
   PONTO_VIRGULA: ';',
   NUM: 'num',
-  SEPARADOR: 'SEPARADOR',
+  SEPARADOR: 'ws',
   VIRGULA: ',',
   CARACTERE: 'CARACTERE',
   ERRO: 'ERRO'
@@ -3506,9 +3506,11 @@ class AnalisadorSintatico {
     while (this.pilhaEstados.length > 0 && proximoToken != undefined) {
       let topoPilha = this.pilhaEstados[this.pilhaEstados.length - 1];
 
+      console.log('\n\n');
+      console.log('Pilha: ');
       console.log(this.pilhaEstados);
-      console.log(topoPilha);
-      console.log(proximoToken);
+      console.log('Topo Pilha: ' + topoPilha);
+      console.log('Próximo Token: ' + proximoToken.tipo);
 
       if (this.simbolosTerminais.includes(topoPilha)) {
         // if (TIPO_TOKEN[topoPilha] != undefined) { // validar !!!
@@ -3546,7 +3548,7 @@ class AnalisadorSintatico {
 // Exemplo de uso
 //let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
 // let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
-let codigo = "programa funcao() /*\nchar -> var1;\nvar1 <- 'd';\nse var1 = 'd' entao /*\n  var1 <- 'e';\n*/\n*/"
+let codigo = "programa funcao() /*\nint -> var1;\nvar1 <- 2;\nse var1 = 3 entao /*\n  var1 <- 4;\n*/\n*/"
 
 const analisador = new AnalisadorSintatico(tabelaAnalisePreditiva);
 analisador.analisar(codigo);
