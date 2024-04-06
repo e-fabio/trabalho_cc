@@ -3131,8 +3131,7 @@ const tabelaAnalisePreditiva = {
         '/*': '2',
         '*/': '3',
         'senao': '3',
-        'ate': '3',
-        '$': '3'
+        'ate': '3'
     }, 'declaracao': {
         '*/': '5',
         'tipo': '4',
@@ -3141,8 +3140,7 @@ const tabelaAnalisePreditiva = {
         'enquanto': '5',
         'repita': '5',
         'ate': '5',
-        'id': '5',
-        '$': '5'
+        'id': '5'
     }, 'declaracoes': {
         'tipo': '50',
         'se': '50',
@@ -3297,28 +3295,58 @@ const tabelaAnalisePreditiva = {
 };
 
 const producoes = {
-    '1': ['programa', 'id', '(', ')'],
+    '1': ['programa', 'id', '(', ')', 'bloco'],
     '2': ['/*', 'declaracoes', 'comandos', '*/'],
+    '3': ['ε'],
     '4': ['tipo', '->', 'lista_ids', ';'],
+    '5': ['ε'],
     '6': ['id', 'lista_ids\''],
-    '44': ['ε'],
+    '7': [',', 'lista_ids'],
+    '8': ['comandoSel'],
+    '9': ['comandoRep'],
     '10': ['comandoAtr'],
+    '11': ['ε'],
+    '12': ['se', 'cond', 'entao', 'comandoSel\''],
+    '13': ['bloco', 'comandoSel\'\''],
+    '14': ['comando', 'comandoSel\'\''],
+    '15': ['ε'],
+    '16': ['senao', 'comandoSel\'\'\''],
+    '17': ['ε'],
+    '18': ['comando'],
+    '19': ['bloco'],
+    '20': ['enquanto', 'cond', 'faca', 'comandoRep\''],
+    '21': ['repita', 'comandoRep\'\''],
+    '22': ['comando'],
+    '23': ['bloco'],
+    '24': ['comandoRep\'', 'ate', 'cond', ';'],
     '25': ['id', '<-', 'comandoAtr\''],
-    '30': ['expressao2', 'expressao\''],
-    '34': ['expressao3', 'expressao2\''],
-    '38': ['expressao4', 'expressao3\''],
-    '42': ['termo'],
+    '26': ['termo', 'cond\''],
+    '27': ['opRelacional', 'termo'],
+    '28': ['id'],
     '29': ['num'],
-    '40': ['ε'],
-    '37': ['ε'],
+    '30': ['expressao2', 'expressao\''],
+    '31': ['+', 'expressao2', 'expressao\''],
+    '32': ['-', 'expressao2', 'expressao\''],
     '33': ['ε'],
+    '34': ['expressao3', 'expressao2\''],
+    '35': ['/', 'expressao3', 'expressao2\''],
+    '36': ['*', 'expressao3', 'expressao2\''],
+    '37': ['ε'],
+    '38': ['expressao4', 'expressao3\''],
+    '39': ['^', 'expressao4'],
+    '40': ['ε'],
+    '41': ['(', 'expressao', ')'],
+    '42': ['termo'],
+    '44': ['ε'],
+    '45': ['ε'],
+    '46': ['expressao', ';'],
     '48': ['comando', 'comandos\''],
     '50': ['declaracao', 'declaracoes\''],
     '54': ['comandos'],
     '55': ['ε'],
     '57': ['declaracoes'],
     '58': ['ε'],
-    '46': ['expressao', ';']
+    '59': ['caractere']
 }
 
 class Node {
