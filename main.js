@@ -43,7 +43,7 @@ const TIPO_TOKEN = {
     NUM: 'num',
     SEPARADOR: 'ws',
     VIRGULA: ',',
-    CARACTERE: 'CARACTERE',
+    CARACTERE: 'caractere',
     ERRO: 'ERRO'
 };
 
@@ -3242,11 +3242,13 @@ const tabelaAnalisePreditiva = {
         ';': '45'
     }, 'termo': {
         'id': '28',
-        'num': '29'
+        'num': '29',
+        'caractere': '59'
     }, 'expressao': {
         '(': '30',
         'id': '30',
-        'num': '30'
+        'num': '30',
+        'caractere': '30'
     }, 'expressao\'': {
         ')': '33',
         '+': '31',
@@ -3281,7 +3283,7 @@ const tabelaAnalisePreditiva = {
         '(': '41',
         'id': '42',
         'num': '42',
-        'caractere': '52'
+        'caractere': '42'
     },
     'comandoAtr\'': {
         '*/': '46',
@@ -3298,7 +3300,7 @@ class AnalisadorSintatico {
     constructor(tabelaAnalisePreditiva) {
         this.tabelaAnalisePreditiva = tabelaAnalisePreditiva;
         this.pilhaEstados = [];
-        this.simbolosTerminais = ['programa', '/*', '*/', 'tipo', 'se', '(', ')', 'entao', 'senao', '%', 'enquanto', 'faca', 'repita', 'ate', 'id', 'opRelacional', '+', '-', '*', '/', '^', '->', '<-', ';', '<-', 'num', ',', 'ws', '.', 'E', '$'];
+        this.simbolosTerminais = ['programa', '/*', '*/', 'tipo', 'se', '(', ')', 'entao', 'senao', '%', 'enquanto', 'faca', 'repita', 'ate', 'id', 'opRelacional', '+', '-', '*', '/', '^', '->', '<-', ';', '<-', 'num', ',', 'ws', '.', 'E', 'caractere', '$'];
     }
 
     inicializar_pilha() {
@@ -3540,10 +3542,6 @@ class AnalisadorSintatico {
                 this.pilhaEstados.push('declaracoes\'')
                 this.pilhaEstados.push('declaracao');
                 break;
-            case '52':
-                this.pilhaEstados.pop();
-                this.pilhaEstados.push('caractere')
-                break;
             case '57':
                 this.pilhaEstados.pop();
                 this.pilhaEstados.push('declaracoes')
@@ -3557,6 +3555,10 @@ class AnalisadorSintatico {
                 break;
             case '55':
                 this.pilhaEstados.pop();
+                break;
+            case '59':
+                this.pilhaEstados.pop();
+                this.pilhaEstados.push('caractere')
                 break;
         }
     }
@@ -3596,7 +3598,10 @@ class AnalisadorSintatico {
         }
 
         if (proximoToken != undefined) {
-            console.log('Erro sintático encontrado -> Fim inesperado');
+            console.log('Erro sintático encontrado');
+            console.log('Token esperado: ' + this.pilhaEstados[this.pilhaEstados.length - 1]);
+            console.log('Token encontrado: ' + proximoToken.tipo);
+            console.log('Linha: ' + proximoToken.posicao.linha + ' - Coluna: ' + proximoToken.posicao.coluna)
             return;
         }
 
@@ -3611,7 +3616,10 @@ class AnalisadorSintatico {
 // Exemplo de uso
 //let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
 // let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
-let codigo = "programa funcao() /*\nint -> var1;\nvar1 <- 2;\nse var1 = 3 entao /*\n  var1 <- 4;\n*/\n*/"
+// let codigo = "programa funcao() /*\nint -> var1;\nvar1 <- 2;\nse var1 = 3 entao /*\n  var1 <- 4;\n*/\n*/"
+// let codigo = "programa main() /* \nse var2 < 4; entao var5<-3; senao var5<-4 */"
+// let codigo = "programa main() /*\nfloat -> x1,x2; char -> u;\n\n enquanto x5 > 10 faca /*\n\nse x8 = 'm' entao x8 <- 9;*/*/"
+let codigo = "programa main() /*repita x <- 'd'; ate x7 <= 5789;*/"
 
 const analisador = new AnalisadorSintatico(tabelaAnalisePreditiva);
 analisador.analisar(codigo);
