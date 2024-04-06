@@ -3143,6 +3143,16 @@ const tabelaAnalisePreditiva = {
     'ate': '5',
     'id': '5',
     '$': '5'
+  }, 'declaracoes': {
+    '*/': '50',
+    'tipo': '50',
+    'se': '50',
+    'senao': '50',
+    'enquanto': '50',
+    'repita': '50',
+    'ate': '50',
+    'id': '50',
+    '$': '50'
   }, 'lista_ids': {
     'id': '6'
   }, 'lista_ids\'': {
@@ -3229,7 +3239,8 @@ const tabelaAnalisePreditiva = {
   }, 'expressao2': {
     '(': '34',
     'id': '34',
-    'num': '34'
+    'num': '34',
+    'caractere': '34'
   }, 'expressao2\'': {
     ')': '37',
     '+': '37',
