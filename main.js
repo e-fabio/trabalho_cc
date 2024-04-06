@@ -3296,11 +3296,42 @@ const tabelaAnalisePreditiva = {
     }
 };
 
+const producoes = {
+    '1': ['programa', 'id', '(', ')'],
+    '2': ['/*', 'declaracoes', 'comandos', '*/'],
+    '4': ['tipo', '->', 'lista_ids', ';'],
+    '6': ['id', 'lista_ids\''],
+    '44': ['ε'],
+    '10': ['comandoAtr'],
+    '25': ['id', '<-', 'comandoAtr\''],
+    '30': ['expressao2', 'expressao\''],
+    '34': ['expressao3', 'expressao2\''],
+    '38': ['expressao4', 'expressao3\''],
+    '42': ['termo'],
+    '29': ['num'],
+    '40': ['ε'],
+    '37': ['ε'],
+    '33': ['ε'],
+    '48': ['comando', 'comandos\''],
+    '50': ['declaracao', 'declaracoes\''],
+    '54': ['comandos'],
+    '55': ['ε'],
+    '57': ['declaracoes'],
+    '58': ['ε'],
+    '46': ['expressao', ';']
+}
+
+class Node {
+    constructor(valor) {
+        this.valor = valor;
+        this.fihos = [];
+    }
+}
+
 class AnalisadorSintatico {
     constructor(tabelaAnalisePreditiva) {
         this.tabelaAnalisePreditiva = tabelaAnalisePreditiva;
         this.pilhaEstados = [];
-        this.simbolosTerminais = ['programa', '/*', '*/', 'tipo', 'se', '(', ')', 'entao', 'senao', '%', 'enquanto', 'faca', 'repita', 'ate', 'id', 'opRelacional', '+', '-', '*', '/', '^', '->', '<-', ';', '<-', 'num', ',', 'ws', '.', 'E', 'caractere', '$'];
     }
 
     inicializar_pilha() {
@@ -3568,6 +3599,11 @@ class AnalisadorSintatico {
 
         this.inicializar_pilha();
 
+        let raizAST = new Node('codigo'); // Nó raiz da AST
+        let pilhaAST = []; // Pilha para construção da AST
+
+        let noAtual = raizAST;
+
         while (this.pilhaEstados.length > 0 && proximoToken != undefined) {
             let topoPilha = this.pilhaEstados[this.pilhaEstados.length - 1];
 
@@ -3577,21 +3613,39 @@ class AnalisadorSintatico {
             console.log('Topo Pilha: ' + topoPilha);
             console.log('Próximo Token: ' + proximoToken.tipo);
 
-            if (this.simbolosTerminais.includes(topoPilha)) {
-                // if (TIPO_TOKEN[topoPilha] != undefined) { // validar !!!
+            let novoNo = new Node(topoPilha);
+
+            if (Object.values(TIPO_TOKEN).includes(topoPilha)) {
                 if (topoPilha == proximoToken.tipo) {
                     this.pilhaEstados.pop();
                     proximoToken = this.proximo_token(codigo);
+
+                    pilhaAST.pop();
                 } else {
+                    console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Token \'' + proximoToken.tipo + '\' esperado.');
                     break;
                 }
             } else {
                 let producao = this.tabelaAnalisePreditiva[topoPilha][proximoToken.tipo];
 
                 if (producao == undefined) {
+                    console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Produção não definida.');
                     break;
                 } else {
-                    // construir arvore aqui
+
+                    pilhaAST.pop();
+
+                    producoes[producao].forEach(simbolo => {
+                        if (simbolo != 'ε') {
+                            let novoFilho = new Node(simbolo);
+                            novoNo.fihos.push(novoFilho);
+                            pilhaAST.push(novoFilho);
+                        }
+                    });
+
+                    noAtual.fihos.push(novoNo);
+                    noAtual = novoNo;
+
                     this.atualizar_pilha(producao);
                 }
             }
@@ -3607,8 +3661,10 @@ class AnalisadorSintatico {
 
         if (this.pilhaEstados.length == 0) {
             console.log('Aceita!');
+            return raizAST;
         } else {
-            console.log('Erro sintático encontrado -> TOKEN = ' + proximoToken.tipo + ' -> PILHA = ' + (this.pilhaEstados.length == 0 ? 'VAZIA' : this.pilhaEstados));
+            console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Código incompleto.');
+            return null;
         }
     }
 }
@@ -3622,4 +3678,39 @@ class AnalisadorSintatico {
 let codigo = "programa main() /*repita x <- 'd'; ate x7 <= 5789;*/"
 
 const analisador = new AnalisadorSintatico(tabelaAnalisePreditiva);
-analisador.analisar(codigo);
+let resultado_ast = analisador.analisar(codigo);
+
+
+function exibir_arvore(no, ordem, nivel = 0) {
+    if (no !== null) {
+        if (ordem == 'pre') {
+            console.log(' '.repeat(nivel) + no.valor);
+            for (let filho of no.fihos) {
+                exibir_arvore(filho, 'pre', nivel + 1);
+            }
+        } else if (ordem == 'pos') {
+            no.fihos.forEach(child => {
+                exibir_arvore(child, 'pos', nivel + 1);
+            });
+            console.log(' '.repeat(nivel) + no.valor);
+        } else if (ordem == 'em') {
+            if (no.fihos.length > 0) {
+                exibir_arvore(no.fihos[0], 'em', nivel + 1); // Imprime o primeiro filho
+            }
+            console.log(' '.repeat(nivel) + no.valor); // Imprime o valor do nó atual
+            if (no.fihos.length > 1) {
+                for (let i = 1; i < no.fihos.length; i++) {
+                    exibir_arvore(no.fihos[i], 'em', nivel + 1); // Imprime os outros filhos
+                }
+            }
+        }
+    }
+}
+
+if (resultado_ast != null) {
+    exibir_arvore(resultado_ast, 'pre');
+    console.log('-----------------------------------------------------------');
+    exibir_arvore(resultado_ast, 'em');
+    console.log('-----------------------------------------------------------');
+    exibir_arvore(resultado_ast, 'pos');
+}
