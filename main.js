@@ -3352,7 +3352,7 @@ const producoes = {
 class Node {
     constructor(valor) {
         this.valor = valor;
-        this.fihos = [];
+        this.filhos = [];
     }
 }
 
@@ -3627,19 +3627,17 @@ class AnalisadorSintatico {
 
         this.inicializar_pilha();
 
-        let raizAST = new Node('codigo'); // Nó raiz da AST
-        let pilhaAST = []; // Pilha para construção da AST
-
+        let raizAST = new Node('');
         let noAtual = raizAST;
 
         while (this.pilhaEstados.length > 0 && proximoToken != undefined) {
             let topoPilha = this.pilhaEstados[this.pilhaEstados.length - 1];
 
-            console.log('\n\n');
-            console.log('Pilha: ');
-            console.log(this.pilhaEstados);
-            console.log('Topo Pilha: ' + topoPilha);
-            console.log('Próximo Token: ' + proximoToken.tipo);
+            // console.log('\n\n');
+            // console.log('Pilha: ');
+            // console.log(this.pilhaEstados);
+            // console.log('Topo Pilha: ' + topoPilha);
+            // console.log('Próximo Token: ' + proximoToken.tipo);
 
             let novoNo = new Node(topoPilha);
 
@@ -3647,8 +3645,6 @@ class AnalisadorSintatico {
                 if (topoPilha == proximoToken.tipo) {
                     this.pilhaEstados.pop();
                     proximoToken = this.proximo_token(codigo);
-
-                    pilhaAST.pop();
                 } else {
                     console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Token \'' + proximoToken.tipo + '\' esperado.');
                     break;
@@ -3661,17 +3657,19 @@ class AnalisadorSintatico {
                     break;
                 } else {
 
-                    pilhaAST.pop();
-
                     producoes[producao].forEach(simbolo => {
                         if (simbolo != 'ε') {
                             let novoFilho = new Node(simbolo);
-                            novoNo.fihos.push(novoFilho);
-                            pilhaAST.push(novoFilho);
+                            novoNo.filhos.push(novoFilho);
                         }
                     });
 
-                    noAtual.fihos.push(novoNo);
+                    var filhoEncontrado = noAtual.filhos.findIndex(x => x.valor == topoPilha);
+                    if (filhoEncontrado == -1)
+                        noAtual.filhos.push(novoNo);
+                    else noAtual.filhos[filhoEncontrado] = novoNo;
+
+
                     noAtual = novoNo;
 
                     this.atualizar_pilha(producao);
@@ -3688,7 +3686,7 @@ class AnalisadorSintatico {
         }
 
         if (this.pilhaEstados.length == 0) {
-            console.log('Aceita!');
+            console.log('\nAceita!\n');
             return raizAST;
         } else {
             console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Código incompleto.');
@@ -3713,32 +3711,32 @@ function exibir_arvore(no, ordem, nivel = 0) {
     if (no !== null) {
         if (ordem == 'pre') {
             console.log(' '.repeat(nivel) + no.valor);
-            for (let filho of no.fihos) {
+            for (let filho of no.filhos) {
                 exibir_arvore(filho, 'pre', nivel + 1);
             }
         } else if (ordem == 'pos') {
-            no.fihos.forEach(child => {
+            no.filhos.forEach(child => {
                 exibir_arvore(child, 'pos', nivel + 1);
             });
             console.log(' '.repeat(nivel) + no.valor);
         } else if (ordem == 'em') {
-            if (no.fihos.length > 0) {
-                exibir_arvore(no.fihos[0], 'em', nivel + 1); // Imprime o primeiro filho
+            if (no.filhos.length > 0) {
+                exibir_arvore(no.filhos[0], 'em', nivel + 1); // Imprime o primeiro filho
             }
             console.log(' '.repeat(nivel) + no.valor); // Imprime o valor do nó atual
-            if (no.fihos.length > 1) {
-                for (let i = 1; i < no.fihos.length; i++) {
-                    exibir_arvore(no.fihos[i], 'em', nivel + 1); // Imprime os outros filhos
+            if (no.filhos.length > 1) {
+                for (let i = 1; i < no.filhos.length; i++) {
+                    exibir_arvore(no.filhos[i], 'em', nivel + 1); // Imprime os outros filhos
                 }
             }
         }
     }
 }
 
+
 if (resultado_ast != null) {
-    exibir_arvore(resultado_ast, 'pre');
     console.log('-----------------------------------------------------------');
-    exibir_arvore(resultado_ast, 'em');
-    console.log('-----------------------------------------------------------');
+    console.log('AST - Pós-ordem\n');
     exibir_arvore(resultado_ast, 'pos');
+    console.log('-----------------------------------------------------------');
 }
