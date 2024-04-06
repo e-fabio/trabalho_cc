@@ -3144,16 +3144,20 @@ const tabelaAnalisePreditiva = {
         'id': '5',
         '$': '5'
     }, 'declaracoes': {
-    '*/': '50',
-    'tipo': '50',
-    'se': '50',
-    'senao': '50',
-    'enquanto': '50',
-    'repita': '50',
-    'ate': '50',
-    'id': '50',
-    '$': '50'
-  }, 'lista_ids': {
+        'tipo': '50',
+        'se': '50',
+        'enquanto': '50',
+        'repita': '50',
+        'id': '50'
+    },
+    'declaracoes\'': {
+        'tipo': '57',
+        'se': '58',
+        'enquanto': '58',
+        'repita': '58',
+        'id': '58'
+    },
+    'lista_ids': {
         'id': '6'
     }, 'lista_ids\'': {
         ';': '44',
@@ -3168,11 +3172,18 @@ const tabelaAnalisePreditiva = {
         'id': '10'
     },
     'comandos': {
-        '*/': '48',
         'se': '48',
         'enquanto': '48',
         'repita': '48',
-        'id': '48'
+        'id': '48',
+        '*/': '48'
+    },
+    'comandos\'': {
+        'se': '54',
+        'enquanto': '54',
+        'repita': '54',
+        'id': '54',
+        '*/': '55'
     },
     'comandoSel': {
         'se': '12'
@@ -3296,7 +3307,7 @@ class AnalisadorSintatico {
 
     proximo_token(codigo) {
         let proximoToken = analisador_lexico(codigo);
-        while (proximoToken.tipo == TIPO_TOKEN.COMENTARIO || proximoToken.tipo == TIPO_TOKEN.SEPARADOR) {
+        while (proximoToken != undefined && (proximoToken.tipo == TIPO_TOKEN.COMENTARIO || proximoToken.tipo == TIPO_TOKEN.SEPARADOR)) {
             // Ignora e lê o próximo
             proximoToken = analisador_lexico(codigo);
         }
@@ -3515,19 +3526,37 @@ class AnalisadorSintatico {
                 this.pilhaEstados.pop();
                 break;
             case '46':
+                this.pilhaEstados.pop();
                 this.pilhaEstados.push(';')
                 this.pilhaEstados.push('expressao');
                 break;
             case '48':
-                this.pilhaEstados.push('comandos')
+                this.pilhaEstados.pop();
+                this.pilhaEstados.push('comandos\'')
                 this.pilhaEstados.push('comando');
                 break;
             case '50':
-                this.pilhaEstados.push('declaracoes')
+                this.pilhaEstados.pop();
+                this.pilhaEstados.push('declaracoes\'')
                 this.pilhaEstados.push('declaracao');
                 break;
             case '52':
+                this.pilhaEstados.pop();
                 this.pilhaEstados.push('caractere')
+                break;
+            case '57':
+                this.pilhaEstados.pop();
+                this.pilhaEstados.push('declaracoes')
+                break;
+            case '58':
+                this.pilhaEstados.pop();
+                break;
+            case '54':
+                this.pilhaEstados.pop();
+                this.pilhaEstados.push('comandos')
+                break;
+            case '55':
+                this.pilhaEstados.pop();
                 break;
         }
     }
@@ -3566,12 +3595,12 @@ class AnalisadorSintatico {
             }
         }
 
-        if (proximoToken == undefined) {
+        if (proximoToken != undefined) {
             console.log('Erro sintático encontrado -> Fim inesperado');
             return;
         }
 
-        if (proximoToken.tipo == '$' && this.pilhaEstados.length == 0) {
+        if (this.pilhaEstados.length == 0) {
             console.log('Aceita!');
         } else {
             console.log('Erro sintático encontrado -> TOKEN = ' + proximoToken.tipo + ' -> PILHA = ' + (this.pilhaEstados.length == 0 ? 'VAZIA' : this.pilhaEstados));
