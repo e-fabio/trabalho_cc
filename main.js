@@ -8,11 +8,9 @@ class Token {
     }
 }
 
-// adicionar apenas no léxico ???
 var linha = 1;
 var coluna = 0;
 var posicao = 0;
-// const tokens = [];
 
 // Definindo os tipos de tokens
 const TIPO_TOKEN = {
@@ -3633,12 +3631,6 @@ class AnalisadorSintatico {
         while (this.pilhaEstados.length > 0 && proximoToken != undefined) {
             let topoPilha = this.pilhaEstados[this.pilhaEstados.length - 1];
 
-            // console.log('\n\n');
-            // console.log('Pilha: ');
-            // console.log(this.pilhaEstados);
-            // console.log('Topo Pilha: ' + topoPilha);
-            // console.log('Próximo Token: ' + proximoToken.tipo);
-
             let novoNo = new Node(topoPilha);
 
             if (Object.values(TIPO_TOKEN).includes(topoPilha)) {
@@ -3646,7 +3638,7 @@ class AnalisadorSintatico {
                     this.pilhaEstados.pop();
                     proximoToken = this.proximo_token(codigo);
                 } else {
-                    console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Token \'' + proximoToken.tipo + '\' esperado.');
+                    console.log('Erro sintático - Linha ' + proximoToken.posicao.linha + ', Coluna ' + proximoToken.posicao.coluna + ': Token \'' + topoPilha + '\' esperado.');
                     break;
                 }
             } else {
@@ -3696,7 +3688,7 @@ class AnalisadorSintatico {
 }
 
 // Exemplo de uso
-//let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
+// let codigo = "  int a = 10;char c = 'd'; %Comentário%\nfloat b = 20;-->-";
 // let codigo = "enquanto 'a'';', a, >=, b faca, a <-, a -, 1;,,12.1,(,ate,),";
 // let codigo = "programa funcao() /*\nint -> var1;\nvar1 <- 2;\nse var1 = 3 entao /*\n  var1 <- 4;\n*/\n*/"
 // let codigo = "programa main() /* \nse var2 < 4; entao var5<-3; senao var5<-4 */"
